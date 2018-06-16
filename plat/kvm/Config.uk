@@ -17,4 +17,12 @@ config KVM_PCI
        select LIBUKBUS
        help
                 PCI bus driver for probing and operating PCI devices
+
+       config KVM_VIRTIO_NET
+       bool "Virtio Network Driver"
+       default n
+       select LIBUKNETDEV
+       help
+                Driver for virtio-net PCI devices
+
 endif

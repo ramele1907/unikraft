@@ -8,6 +8,7 @@ $(eval $(call addplat_s,kvm,$(CONFIG_PLAT_KVM)))
 ##
 $(eval $(call addplatlib,kvm,libkvmplat))
 $(eval $(call addplatlib_s,kvm,libkvmpci,$(CONFIG_KVM_PCI)))
+$(eval $(call addplatlib_s,kvm,libkvmvirtionet,$(CONFIG_KVM_VIRTIO_NET)))
 
 ##
 ## Platform library definitions
@@ -42,3 +43,10 @@ LIBKVMPLAT_SRCS-y              += $(LIBKVMPLAT_BASE)/tscclock.c
 LIBKVMPLAT_SRCS-y              += $(UK_PLAT_COMMON_BASE)/lcpu.c|common
 
 LIBKVMPCI_SRCS-y                     += $(UK_PLAT_COMMON_BASE)/pci_bus.c|common
+
+LIBKVMVIRTIONET_ASINCLUDES-y  += -I$(LIBKVMPLAT_BASE)/include
+LIBKVMVIRTIONET_CINCLUDES-y   += -I$(LIBKVMPLAT_BASE)/include
+LIBKVMVIRTIONET_ASINCLUDES-y  += -I$(UK_PLAT_COMMON_BASE)/include/pci
+LIBKVMVIRTIONET_CINCLUDES-y   += -I$(UK_PLAT_COMMON_BASE)/include/pci
+LIBKVMVIRTIONET_SRCS-y        += $(UK_PLAT_DRIVERS_BASE)/virtio/virtio-ring.c
+LIBKVMVIRTIONET_SRCS-y        += $(UK_PLAT_DRIVERS_BASE)/virtio/virtio-net.c
