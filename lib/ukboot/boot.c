@@ -63,6 +63,7 @@
 int main(int argc, char *argv[]) __weak;
 #ifdef CONFIG_LIBLWIP
 extern int liblwip_init(void);
+extern int liblwip_init2(void);
 #endif /* CONFIG_LIBLWIP */
 
 static void main_thread_func(void *arg) __noreturn;
@@ -78,6 +79,14 @@ static void main_thread_func(void *arg)
 	int ret;
 	struct thread_main_arg *tma = arg;
 
+#if CONFIG_LIBLWIP
+	/* Start networking */
+	uk_printd(DLVL_INFO, "Initialize lwIP...\n");
+	ret = liblwip_init2();
+	if (ret)
+		uk_printd(DLVL_WARN, "Failed to initialize lwIP\n");
+#endif
+
 	uk_printd(DLVL_INFO, "Calling main(%d, [", tma->argc);
 	for (i = 0; i < tma->argc; ++i) {
 		uk_printd(DLVL_INFO, "'%s'", tma->argv[i]);
@@ -86,14 +95,14 @@ static void main_thread_func(void *arg)
 	}
 	uk_printd(DLVL_INFO, "])\n");
 
-#ifdef CONFIG_LIBUKBUS
+#if 0//def CONFIG_LIBUKBUS
 	uk_printd(DLVL_INFO, "Initialize bus handlers...\n");
 	uk_bus_init_all(uk_alloc_get_default());
 	uk_printd(DLVL_INFO, "Probe buses...\n");
 	uk_bus_probe_all();
 #endif /* CONFIG_LIBUKBUS */
 
-#ifdef CONFIG_LIBLWIP
+#if 0//def CONFIG_LIBLWIP
 	/*
 	 * TODO: This is an initial implementation where we call the
 	 * initialization of lwip directly. We will remove this call
@@ -245,6 +254,21 @@ void ukplat_entry(int argc, char *argv[])
 	s = uk_sched_default_init(a);
 	if (unlikely(!s))
 		UK_CRASH("Could not initialize the scheduler.");
+#endif
+
+#if CONFIG_LIBUKBUS
+	uk_printd(DLVL_INFO, "Initialize bus handlers...\n");
+	uk_bus_init_all(uk_alloc_get_default());
+
+	uk_printd(DLVL_INFO, "Probe buses...\n");
+	uk_bus_probe_all();
+
+#if CONFIG_LIBLWIP
+	/* Start networking */
+	uk_printd(DLVL_INFO, "Initialize lwIP...\n");
+	if (liblwip_init())
+		uk_printd(DLVL_WARN, "Failed to initialize lwIP\n");
+#endif
 #endif
 
 	tma.argc = argc;
