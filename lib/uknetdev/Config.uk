@@ -1,0 +1,8 @@
+menuconfig LIBUKNETDEV
+	bool "uknetdev: Network driver interface"
+	default n
+	select LIBUKDEBUG
+	select LIBUKALLOC
+
+if LIBUKNETDEV
+endif

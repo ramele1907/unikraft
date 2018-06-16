@@ -1,0 +1,13 @@
+uk_netdev_count
+uk_netdev_get
+uk_netdev_register
+uk_netdev_configure
+uk_netdev_start
+uk_netdev_ip_get
+uk_netdev_ip_set
+uk_netdev_mac_addr_set
+uk_netdev_mtu_set
+uk_netdev_rx_queue_setup
+uk_netdev_tx_queue_setup
+uk_netdev_rx
+uk_netdev_tx
