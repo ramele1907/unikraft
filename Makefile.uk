@@ -9,7 +9,8 @@ ASINCLUDES  += -nostdinc -nostdlib -I$(CONFIG_UK_BASE)/include
 
 CFLAGS      += -U __linux__ -U __FreeBSD__ -U __sun__ -no-pie
 CFLAGS      += -fno-stack-protector -fno-omit-frame-pointer -fno-tree-sra
-CFLAGS      += -Wall -Wextra
+#CFLAGS      += -Wall -Wextra
+CFLAGS      += -w
 CINCLUDES   += -nostdinc -nostdlib -I$(CONFIG_UK_BASE)/include
 
 CXXFLAGS    += -U __linux__ -U __FreeBSD__ -U __sun__ -no-pie
